@@ -1,0 +1,29 @@
+/* (CSS yang sudah ada tetap ada di sini) */
+
+.about-us-section {
+  text-align: center;
+  padding: 40px;
+}
+
+.section-header {
+  margin-bottom: 20px;
+}
+
+.team-members {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.team-member {
+  max-width: 300px;
+  margin: 20px;
+}
+
+.team-member img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 50%; /* Untuk membulatkan foto */
+}
+
+/* (CSS yang sudah ada tetap ada di sini) */
