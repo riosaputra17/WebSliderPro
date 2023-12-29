@@ -20,6 +20,9 @@ $date_now = date("Y-m-d");
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+    </script>
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript>
         <link rel="stylesheet" href="assets/css/noscript.css" />
@@ -46,6 +49,7 @@ $date_now = date("Y-m-d");
                 <li><a href="#first">Keuntungan</a></li>
                 <li><a href="#second">Workshop Tersedia</a></li>
                 <li><a href="#cta">Admin</a></li>
+                <li><a href="#cta">Materi</a></li>
             </ul>
         </nav>
 
@@ -67,7 +71,7 @@ $date_now = date("Y-m-d");
                             menyenangkan dan interaktif. Dapatkan tutorial langkah-demi-langkah, ikuti webinar, dan
                             kerja sama dalam proyek bersama. Sambut perubahan dan tingkatkan keterampilan presentasi
                             Anda bersama kami!</p>
-                    </div>
+                    </div>xa
                     <img src="img/landing1.png" class="landing" />
                 </div>
                 <div class="spotlight2">
@@ -200,10 +204,10 @@ $date_now = date("Y-m-d");
             <!-- Get Started -->
             <section id="cta" class="main special">
                 <header class="major">
-                    <h2>Kelola Web Sebagai Admin</h2>
+                    <h2>Silahkan Login Terlebih Dahulu</h2>
                 </header>
                 <footer class="major">
-                    <ul class="actions special">
+                    <ul id="login" class="actions special">
                         <li><a href="login.php" class="button primary">Login</a></li>
                     </ul>
                 </footer>
