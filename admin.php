@@ -4,6 +4,7 @@ require 'backend/koneksi.php';
 include 'backend/tambahjob.php';
 include 'backend/update.php';
 include 'backend/tambahmateri.php';
+include 'backend/update_materi.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -191,14 +192,14 @@ include 'backend/tambahmateri.php';
                                         <td><?= $namajob; ?></td>
                                         <td><?= $periode; ?></td>
                                         <td><?= $deadline; ?></td>
-                                        <td><button type="button" class="button primary small" data-toggle="modal" data-target="#edit<?= $idjob; ?>">Edit</button><button type="submit" class="button small" style="background-color:red;" name="deletejob">
+                                        <td><button type="button" class="button primary small" data-toggle="modal" data-target="#edit<?= $idjob; ?>">Edit</button><button onclick="return confirm('Apakah Anda yakin ingin menghapus Kelas <?php echo $namajob?>?')" type="submit" class="button small" style="background-color:red;" name="deletejob">
                                                 <font color="white">Delete</font>
                                             </button></td>
                                     </form>
                                 </tr>
 
 
-                                <!-- The Modal -->
+                                <!-- The Modal Edit -->
                                 <div class="modal fade" id="edit<?= $idjob; ?>">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -269,20 +270,23 @@ include 'backend/tambahmateri.php';
                 <div align="right"><button type="button" class="primary" data-toggle="modal" data-target="#modalTambahMateri">Tambah Materi Baru</button></div>
                 <br>
                 <div class="data-tables datatable-dark">
-                    <table id="table1" class="display" width="100%">
+                    <table id="table3" class="display" width="100%">
                         <thead style="background-color:#2b2b2b;color:#fff">
                             <tr>
+                                <th>ID Materi</th>
+                                <th>Nama Job</th>
                                 <th>Nama Materi</th>
-                                <th>Kategori</th>
                                 <th>Link Materi</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            $getdata = mysqli_query($conn, "select * from materi");
+                            $getdata = mysqli_query($conn, "select materi.id_materi as id_materi, materi.nama_materi as nama_materi, materi.link_materi as link_materi, job.id as id_job, job.jobname as job_name from materi join job on materi.id_job=job.id");
                             while ($data = mysqli_fetch_array($getdata)) {
                                 $id_materi = $data['id_materi'];
                                 $id_job = $data['id_job'];
+                                $job_name = $data['job_name'];
                                 $nama_materi = $data['nama_materi'];
                                 $link_materi = $data['link_materi'];
 
@@ -290,54 +294,55 @@ include 'backend/tambahmateri.php';
 
                                 <tr>
                                     <form method="post">
-                                        <input type="hidden" name="idj" value="<?= $id_materi; ?>">
+                                        <input type="hidden" name="idm" value="<?= $id_materi; ?>">
                                         <td><?= $id_materi; ?></td>
-                                        <td><?= $id_job; ?></td>
+                                        <td><?= $job_name; ?></td>
                                         <td><?= $nama_materi; ?></td>
                                         <td><?= $link_materi; ?></td>
-                                        <td><button type="button" class="button primary small" data-toggle="modal" data-target="#edit<?= $id_materi; ?>">Edit</button><button type="submit" class="button small" style="background-color:red;" name="deletejob">
-                                                <font color="white">Delete</font>
+                                        <td><button type="button" class="button primary small" data-toggle="modal" data-target="#edit_materi_<?= $id_materi; ?>">Ubah Materi</button><button onclick="return confirm('Apakah Anda yakin ingin menghapus Materi <?php echo $nama_materi?>?')" type="submit" class="button small" style="background-color:red;" name="delete_materi">
+                                                <font color="white">Hapus Materi</font>
                                             </button></td>
                                     </form>
                                 </tr>
 
 
-                                <!-- The Modal -->
-                                <div class="modal fade" id="edit<?= $idjob; ?>">
+                                <!-- The Modal Edit Materi -->
+                                <div class="modal fade" id="edit_materi_<?= $id_materi; ?>">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <form method="post">
 
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Edit <?= $namajob; ?></h4>
+                                                    <h4 class="modal-title">Edit <?= $nama_materi; ?></h4>
                                                 </div>
 
                                                 <!-- Modal body -->
                                                 <div class="modal-body">
-                                                    <input type="text" name="updatejobname" class="form-control" value="<?= $namajob; ?>"><br>
+                                                    <input type="text" name="update_nama_materi" class="form-control" value="<?= $nama_materi; ?>"><br>
 
-                                                    <textarea name="updatedesc"><?= $descjob; ?></textarea><br>
-
-                                                    Start Date: <input type="date" name="updatestart" class="form-control" value="<?= $data['jobstart']; ?>"><br>
-
-                                                    End Date: <input type="date" name="updateend" class="form-control" value="<?= $data['jobend']; ?>"><br>
-
-                                                    End Registration: <input type="date" name="updatedeadline" class="form-control" value="<?= $data['registerend']; ?>"><br>
-
-                                                    <input type="text" name="updatejobloc" class="form-control" value="<?= $jobloc; ?>"><br>
-
-                                                    <select name="updateworkingtype">
-                                                        <option selected values="WFH">WFH</option>
-                                                        <option value="WFO">WFO</option>
-                                                        <option value="Mix">MIX WFH-WFO / Rolling</option>
+                                                    <select name="update_kategori">
+                                                        <?php
+                                                        $get_data_job = mysqli_query($conn, "select * from job");
+                                                        while ($data = mysqli_fetch_array($get_data_job)) {
+                                                            $idjob = $data['id'];
+                                                            $namajob = $data['jobname'];
+                                                            $kategori = array($idjob => $namajob);
+                                                        ?>
+                                                            <option value="<?= $idjob; ?>"><?= $namajob; ?></option>
+                                                            <?php foreach ($job_array as $var => $kategori) : ?>
+                                                                <option value="<?php echo $var ?>" <?php if ($var == $result['update_kategori']) : ?> selected="selected" <?php endif; ?>><?php echo $kategori ?></option>
+                                                        <?php endforeach;
+                                                        } ?>
                                                     </select>
-                                                    <input type="hidden" name="updateid" value="<?= $idjob; ?>">
+                                                    <br>
+                                                    <input type="text" name="update_link_materi" class="form-control" value="<?= $link_materi; ?>"><br>
+                                                    <input type="hidden" name="updateid" value="<?= $id_materi; ?>">
                                                 </div>
 
                                                 <!-- Modal footer -->
                                                 <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-primary" name="update">Update</button>
+                                                    <button type="submit" class="btn btn-primary" name="update_materi">Update Materi</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -347,9 +352,9 @@ include 'backend/tambahmateri.php';
                             <?php
                             };
 
-                            if (isset($_POST['deletejob'])) {
-                                $idj = $_POST['idj'];
-                                $querydelete = mysqli_query($conn, "delete from job where id='$idj'");
+                            if (isset($_POST['delete_materi'])) {
+                                $idm = $_POST['idm'];
+                                $querydelete = mysqli_query($conn, "delete from materi where id_materi='$idm'");
 
                                 if ($querydelete) {
                                     echo 'Berhasil
@@ -489,6 +494,15 @@ include 'backend/tambahmateri.php';
 
     $(document).ready(function() {
         $('#table2').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'print'
+            ]
+        });
+    });
+
+    $(document).ready(function() {
+        $('#table3').DataTable({
             dom: 'Bfrtip',
             buttons: [
                 'print'
