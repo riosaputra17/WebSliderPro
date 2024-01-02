@@ -19,13 +19,14 @@ if (isset($_POST['login'])) {
 	$user = mysqli_fetch_assoc($result);
 
 	if ($user) {
+        $_SESSION['id'] = $user['id'];
 		$_SESSION['username'] = $username;
 		$_SESSION['role'] = $user['role']; // Tambahkan kolom 'role' pada tabel users
 
 		if ($_SESSION['role'] == 'admin') {
 			header('location:admin.php');
 		} elseif ($_SESSION['role'] == 'user') {
-			header('location:materi.php');
+			header('location:index.php');
 		}
 	} else {
 		echo 'Username atau password salah';

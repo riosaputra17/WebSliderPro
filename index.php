@@ -3,6 +3,15 @@ session_start();
 require 'backend/koneksi.php';
 date_default_timezone_set("Asia/Bangkok");
 $date_now = date("Y-m-d");
+$is_user = false;
+$id_user = 0;
+
+if (isset($_SESSION['username'])) {
+    if ($_SESSION['role'] == 'user') {
+        $is_user = true;
+        $id_user = $_SESSION['id'];
+    }
+}
 
 ?>
 <!DOCTYPE html>
@@ -20,8 +29,7 @@ $date_now = date("Y-m-d");
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
     </script>
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript>
@@ -48,8 +56,23 @@ $date_now = date("Y-m-d");
                 <li><a href="#intro" class="active">Pendahuluan</a></li>
                 <li><a href="#first">Keuntungan</a></li>
                 <li><a href="#second">Workshop Tersedia</a></li>
-                <li><a href="#cta">Admin</a></li>
-                <li><a href="#cta">Materi</a></li>
+                <li><a <?php if ($is_user) {
+                            echo 'href=/WebSliderPro/materi.php?video_materi=1';
+                        } else {
+                            echo 'href="#cta"';
+                        } ?> target="_blank">Materi</a></li>
+                <?php
+                if (!$is_user) {
+                ?>
+                    <li><a href="#cta">Admin</a></li>
+                <?php
+                } else {
+                ?>
+                    <li><a class="logout-button" href="logout.php">Logout</a></li>
+                <?php
+                } ?>
+
+
             </ul>
         </nav>
 
@@ -71,7 +94,7 @@ $date_now = date("Y-m-d");
                             menyenangkan dan interaktif. Dapatkan tutorial langkah-demi-langkah, ikuti webinar, dan
                             kerja sama dalam proyek bersama. Sambut perubahan dan tingkatkan keterampilan presentasi
                             Anda bersama kami!</p>
-                    </div>xa
+                    </div>
                     <img src="img/landing1.png" class="landing" />
                 </div>
                 <div class="spotlight2">
@@ -110,20 +133,17 @@ $date_now = date("Y-m-d");
                 <img src="img/pict2.png" class="landing" />
                 <div class="row row-cols-md-3 row-cols-sm-2 row-cols-1">
                     <div class="col mt-3">
-                        <a href="img/gallery/elena-joland--4nhJnfF7W0-unsplash.jpg" data-toggle="lightbox"
-                            data-caption="Prewedding Foto1" data-gallery="mygallery">
+                        <a href="img/gallery/elena-joland--4nhJnfF7W0-unsplash.jpg" data-toggle="lightbox" data-caption="Prewedding Foto1" data-gallery="mygallery">
                             <img src="img/pict2.png" alt="Prewedding Foto1" class="img-fluid w-100 rounded">
                         </a>
                     </div>
                     <div class="col mt-3">
-                        <a href="img/gallery/elena-joland--4nhJnfF7W0-unsplash.jpg" data-toggle="lightbox"
-                            data-caption="Prewedding Foto2" data-gallery="mygallery">
+                        <a href="img/gallery/elena-joland--4nhJnfF7W0-unsplash.jpg" data-toggle="lightbox" data-caption="Prewedding Foto2" data-gallery="mygallery">
                             <img src="img/pict2.png" alt="Prewedding Foto2" class="img-fluid w-100 rounded">
                         </a>
                     </div>
                     <div class="col mt-3">
-                        <a href="img/gallery/elena-joland--4nhJnfF7W0-unsplash.jpg" data-toggle="lightbox"
-                            data-caption="Prewedding Foto3" data-gallery="mygallery">
+                        <a href="img/gallery/elena-joland--4nhJnfF7W0-unsplash.jpg" data-toggle="lightbox" data-caption="Prewedding Foto3" data-gallery="mygallery">
                             <img src="img/pict2.png" alt="Prewedding Foto3" class="img-fluid w-100 rounded">
                         </a>
                     </div>
@@ -184,13 +204,19 @@ $date_now = date("Y-m-d");
                                 $workingtype = $data['workingtype'];
                             ?>
 
-                            <tr>
+                                <tr>
 
-                                <td><?= $namajob; ?></td>
-                                <td><?= $periode; ?></td>
-                                <td><?= $deadline; ?></td>
-                                <td><a href="apply.php?id=<?= $idjob; ?>" class="btn btn-primary">Apply</a></td>
-                            </tr>
+                                    <td><?= $namajob; ?></td>
+                                    <td><?= $periode; ?></td>
+                                    <td><?= $deadline; ?></td>
+                                    <td>
+                                        <form action="apply.php" method="post" style="background-color:transparent; box-shadow:none">
+                                            <input type="hidden" name="id_job" value="<?= $idjob; ?>">
+                                            <input type="hidden" name="id_user" value="<?= $id_user; ?>">
+                                            <button type="submit" class="btn btn-primary">Daftar</button>
+                                        </form>
+                                    </td>
+                                </tr>
 
                             <?php
                             };
@@ -201,17 +227,24 @@ $date_now = date("Y-m-d");
                 </div>
             </section>
 
-            <!-- Get Started -->
-            <section id="cta" class="main special">
-                <header class="major">
-                    <h2>Silahkan Login Terlebih Dahulu</h2>
-                </header>
-                <footer class="major">
-                    <ul id="login" class="actions special">
-                        <li><a href="login.php" class="button primary">Login</a></li>
-                    </ul>
-                </footer>
-            </section>
+            <?php
+            // jika pengguna sudah login, maka sembunyikan login section
+            if (!$is_user) {
+            ?>
+                <!-- Get Started -->
+                <section id="cta" class="main special">
+                    <header class="major">
+                        <h2>Silahkan Login Terlebih Dahulu</h2>
+                    </header>
+                    <footer class="major">
+                        <ul id="login" class="actions special">
+                            <li><a href="login.php" class="button primary">Login</a></li>
+                        </ul>
+                    </footer>
+                </section>
+            <?php
+            }
+            ?>
 
         </div>
 
