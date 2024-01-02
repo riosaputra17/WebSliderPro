@@ -5,6 +5,7 @@ require 'backend/koneksi.php';
 $id_user = $_SESSION['id'];
 $video_played = $_GET['video_materi'];
 $video = array();
+$video_number = 1;
 
 ?>
 <!DOCTYPE html>
@@ -27,8 +28,6 @@ $video = array();
             $id_job = $data_registrant['idjob'];
 
             $get_data_materi = mysqli_query($conn, "SELECT * FROM materi WHERE id_job='$id_job'");
-
-            $video_number = 1;
             while ($data_materi = mysqli_fetch_array($get_data_materi)) {
                 $nama_materi = $data_materi['nama_materi'];
                 $link_materi = $data_materi['link_materi'];
