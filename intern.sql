@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 29, 2023 at 04:51 AM
+-- Generation Time: Jan 02, 2024 at 05:12 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -65,7 +65,7 @@ CREATE TABLE `job` (
 INSERT INTO `job` (`id`, `jobname`, `jobdesc`, `jobstart`, `jobend`, `registerend`, `jobadded`, `jobloc`, `workingtype`) VALUES
 (1, 'Graphic Design', 'Experienced with Adobe Illustrator, Photoshop, InDesign, good sense of designing.', '2021-01-01', '2022-01-01', '2020-11-30', '2020-10-26 05:25:56', 'Central Jakarta', 'WFH'),
 (3, 'System Analyst', 'Building system architecture using diagrams', '2021-01-01', '2022-01-01', '2020-12-31', '2020-10-26 18:58:24', 'Bali', 'WFH'),
-(5, 'Android Developer', 'Menjadi Android Expert', '2023-12-01', '2024-01-06', '2024-01-01', '2023-12-28 12:45:07', 'Bekasi', 'WFO');
+(5, 'Android Developer', 'Menjadi Android Expert', '2023-12-01', '2024-01-06', '2024-10-01', '2023-12-28 12:45:07', 'Bekasi', 'WFO');
 
 -- --------------------------------------------------------
 
@@ -85,7 +85,7 @@ CREATE TABLE `materi` (
 --
 
 INSERT INTO `materi` (`id_materi`, `id_job`, `nama_materi`, `link_materi`) VALUES
-(5, 5, 'Android Itu Kotlin lah', 'https://youtu.be/90NF1quNhPo?si=e9JTSOfBgfJGqwja'),
+(5, 5, 'Android Itu Kotlin lah', 'https://www.youtube.com/embed/6dSNbskzlz4?si=btBm20s8YnfExTeV'),
 (6, 5, 'Mengenal Apa itu Android', 'https://www.youtube.com/embed/xI_udOx4xAU?si=XtZT_pHarza_ZEO6');
 
 -- --------------------------------------------------------
@@ -97,6 +97,7 @@ INSERT INTO `materi` (`id_materi`, `id_job`, `nama_materi`, `link_materi`) VALUE
 CREATE TABLE `registrant` (
   `idreg` int(11) NOT NULL,
   `idjob` int(11) NOT NULL,
+  `iduser` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `gender` varchar(10) NOT NULL,
   `dob` date NOT NULL,
@@ -106,16 +107,38 @@ CREATE TABLE `registrant` (
   `motivational` text NOT NULL,
   `linkedin` varchar(30) NOT NULL,
   `portfolio` varchar(30) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT current_timestamp()
+  `date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `is_approved` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `registrant`
 --
 
-INSERT INTO `registrant` (`idreg`, `idjob`, `name`, `gender`, `dob`, `alamat`, `email`, `telepon`, `motivational`, `linkedin`, `portfolio`, `date`) VALUES
-(13, 2, 'Frendy', 'Laki-laki', '2007-12-05', 'Jl. HS. Ronggo Waluyo Blok A', 'frendy@gmail.com', '+6289514121147', '', 'https://japanesetest4you.com/j', 'https://japanesetest4you.com/j', '2023-12-20 15:33:09'),
-(14, 2, 'Wahyu Rahayu Rahayu', 'Laki-laki', '2007-12-05', 'Jl. HS. Ronggo Waluyo Blok A', 'wahyurahayu82@gmail.com', '+6289514121147', '', 'https://japanesetest4you.com/j', 'https://japanesetest4you.com/j', '2023-12-27 09:33:09');
+INSERT INTO `registrant` (`idreg`, `idjob`, `iduser`, `name`, `gender`, `dob`, `alamat`, `email`, `telepon`, `motivational`, `linkedin`, `portfolio`, `date`, `is_approved`) VALUES
+(13, 2, 0, 'Frendy', 'Laki-laki', '2007-12-05', 'Jl. HS. Ronggo Waluyo Blok A', 'frendy@gmail.com', '+6289514121147', '', 'https://japanesetest4you.com/j', 'https://japanesetest4you.com/j', '2023-12-20 15:33:09', 0),
+(14, 5, 2, 'Wahyu Rahayu', 'Laki-laki', '2007-12-05', 'Jl. HS. Ronggo Waluyo Blok A', 'wahyurahayu82@gmail.com', '+6289514121147', '', 'https://japanesetest4you.com/j', 'https://japanesetest4you.com/j', '2023-12-27 09:33:09', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`, `role`) VALUES
+(1, 'admin1', '12345', 'admin'),
+(2, 'user1', '12345', 'user');
 
 --
 -- Indexes for dumped tables
@@ -146,6 +169,12 @@ ALTER TABLE `registrant`
   ADD PRIMARY KEY (`idreg`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -172,6 +201,12 @@ ALTER TABLE `materi`
 --
 ALTER TABLE `registrant`
   MODIFY `idreg` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
