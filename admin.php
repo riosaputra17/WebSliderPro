@@ -5,6 +5,7 @@ include 'backend/tambahjob.php';
 include 'backend/update.php';
 include 'backend/tambahmateri.php';
 include 'backend/update_materi.php';
+include 'backend/update_peserta.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,7 +64,8 @@ include 'backend/update_materi.php';
                             <th>Register</th>
                             <th>Posisi</th>
                             <th>Nama</th>
-                            <th>Aksi</th>
+                            <th>Detail</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -89,6 +91,7 @@ include 'backend/update_materi.php';
                             $bday = new DateTime($dob);
                             $today = new Datetime(date('m.d.y'));
                             $diff = $today->diff($bday);
+                            $is_approved = $reg['is_approved'];
 
                         ?>
                             <tr>
@@ -96,6 +99,10 @@ include 'backend/update_materi.php';
                                 <td><?= $posisi; ?></td>
                                 <td><?= $nama; ?></td>
                                 <td><button type="button" class="button primary small" data-toggle="modal" data-target="#view<?= $id; ?>">Tampilkan</button></td>
+                                <form method="post">
+                                    <input type="hidden" name="id_peserta" value="<?= $id ?>">
+                                    <td><button type="submit" onclick="return confirm('Apakah Anda yakin untuk mengubah status dari peserta <?php echo $nama .' dengan ID: '. $id ?>?')" name="is_approved" value="<?= !$is_approved ?>" class="btn <?= ($is_approved == 1) ? 'btn-success' : 'btn-warning' ?>"><?= ($is_approved == 1) ? 'Diterima' : 'Belum Diterima' ?></button></td>
+                                </form>
                             </tr>
 
                             <!-- The Modal -->

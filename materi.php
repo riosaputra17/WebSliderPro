@@ -52,6 +52,25 @@ $video = array();
         ?>
     </form>
 
+    <?php 
+    
+    if (count($video) == 0) {
+        ?>
+        <script>
+            var pesan = confirm("Mohon maaf, Anda sepertinya belum terdaftar di kelas manapun, silahkan daftar kelas terlebih dahulu");
+            if (pesan) {
+                window.location.href = "index.php";
+            } else {
+                window.location.href = "index.php";
+            }
+        </script>
+
+        <?php
+
+    }
+
+    ?>
+
     <iframe width="560" height="315" src="<?= $video[$video_played] ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
     <div align="right"><a href="logout.php" class="btn btn-danger">Logout</a></div>

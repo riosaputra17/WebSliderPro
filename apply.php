@@ -50,7 +50,7 @@ if (isset($_POST['apply'])) {
 	$i = $_POST['linkedin'];
 	$j = $_POST['portfolio'];
 
-	$insertdata = mysqli_query($conn, "insert into registrant (idjob,name,gender,dob,alamat,email,telepon,motivational,linkedin,portfolio) values('$idjob','$a','$b','$d','$e','$f','$g','$h','$i','$j')");
+	$insertdata = mysqli_query($conn, "insert into registrant (idjob,iduser,name,gender,dob,alamat,email,telepon,motivational,linkedin,portfolio) values('$idjob','$id_user','$a','$b','$d','$e','$f','$g','$h','$i','$j')");
 
 	if ($insertdata) {
 		header('location:thanks.php');
@@ -159,6 +159,8 @@ if (isset($_POST['apply'])) {
 							URL Portfolio
 							<input type="url" name="portfolio" required>
 						</div>
+						<input type="hidden" name="id_job" value="<?= $idjob?>">
+						<input type="hidden" name="id_user" value="<?= $id_user?>">
 						<div class="col-12">
 							<ul class="actions">
 								<li><input type="submit" value="Submit" class="primary" name="apply" /></li>
