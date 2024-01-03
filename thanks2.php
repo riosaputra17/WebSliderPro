@@ -16,7 +16,7 @@
     <noscript>
         <link rel="stylesheet" href="assets/css/noscript.css" />
     </noscript>
-    <meta http-equiv="refresh" content="5;url=index.php" />
+    <meta http-equiv="refresh" content="5;url=login.php" />
 </head>
 
 <body style="color:black">
@@ -29,9 +29,9 @@
         <br>
         <br>
         <br>
-        <h2 style="color:black">Terima Kasih Atas Partisipasi Kamu</h2>
-        <p>Informasi selanjutnya akan dikirim melalui email</p>
-        <p>Anda akan dibawa kembali ke halaman utama dalam 5 detik</p>
+        <h2 style="color:black">Terima Kasih Pendaftaran Akun Kamu Berhasil</h2>
+        <p>Silahkan Login dengan username dan password anda</p>
+        <p>Anda akan dibawa kembali ke halaman login dalam 5 detik</p>
         <br>
 
     </div>
