@@ -1,3 +1,32 @@
+<?php
+session_start();
+require 'backend/koneksi.php';
+
+if (isset($_POST['register'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
+
+    // Verifikasi kata sandi
+    if ($password !== $confirm_password) {
+        echo 'Password tidak sesuai';
+        exit();
+    }
+
+    // Hashing password
+    $hashed_password = password_hash($password, 'kunciiniadalahrahasiaperusahaanjadiharusdijagabaikbaikdanjangansampaijatuhkepihakyangtidakbertanggungjawab');
+
+    // Simpan data pengguna baru ke database
+    $result = mysqli_query($conn, "INSERT INTO users (username, password, role) VALUES ('$username', '$hashed_password', 'user')");
+
+    if ($result) {
+        header('Location: thanks2.php'); // Redirect ke halaman login setelah registrasi berhasil
+        exit();
+    } else {
+        echo 'Registration failed. Please try again.';
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,71 +34,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Page</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-GLhlTQ8iK5i+DJFsWnHP4dd/1NapaC9mEXaP1C3r8Q2mRB8RXPnFvcE93uL+6UZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/styles.css">
-    <style>
-
-    </style>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript>
+        <link rel="stylesheet" href="assets/css/noscript.css" />
+    </noscript>
 </head>
 
-<body>
+<body class="is-preload">
 
+    <!-- Wrapper -->
+    <div id="wrapper">
 
-    <section class="vh-100 bg-image" style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
-        <div class="mask d-flex align-items-center h-100 gradient-custom-3">
-            <div class="container h-100">
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-                        <div class="card" style="border-radius: 15px;">
-                            <div class="card-body p-5">
-                                <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+        <!-- Header -->
+        <header id="header" class="alt">
 
-                                <form>
+        </header>
 
-                                    <div class="form-outline mb-4">
-                                        <input type="text" id="form3Example1cg" class="form-control form-control-lg" />
-                                        <label class="form-label" for="form3Example1cg">Your Name</label>
-                                    </div>
+        <!-- Main -->
+        <div id="main">
 
-                                    <div class="form-outline mb-4">
-                                        <input type="email" id="form3Example3cg" class="form-control form-control-lg" />
-                                        <label class="form-label" for="form3Example3cg">Your Email</label>
-                                    </div>
-
-                                    <div class="form-outline mb-4">
-                                        <input type="password" id="form3Example4cg" class="form-control form-control-lg" />
-                                        <label class="form-label" for="form3Example4cg">Password</label>
-                                    </div>
-
-                                    <div class="form-outline mb-4">
-                                        <input type="password" id="form3Example4cdg" class="form-control form-control-lg" />
-                                        <label class="form-label" for="form3Example4cdg">Repeat your password</label>
-                                    </div>
-
-                                    <div class="form-check d-flex justify-content-center mb-5">
-                                        <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" />
-                                        <label class="form-check-label" for="form2Example3g">
-                                            I agree all statements in <a href="#!" class="text-body"><u>Terms of
-                                                    service</u></a>
-                                        </label>
-                                    </div>
-
-                                    <div class="d-flex justify-content-center">
-                                        <button type="button" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
-                                    </div>
-
-                                    <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="loginuser.php" class="fw-bold text-body"><u>Login here</u></a></p>
-
-                                </form>
-
+            <!-- First Section -->
+            <section id="first" class="main special">
+                <header class="major">
+                    <h2>Silahkan Membuat Akun</h2>
+                    <p>Masukan Username dan Password Dengan Benar</p>
+                </header>
+                <form method="post" style="text-align: center;">
+                    <div class="row gtr-uniform">
+                        <div class="col-12">
+                            <label for="username">Username</label>
+                            <input type="text" name="username" placeholder="Username" style="margin-bottom: 15px; width: 400px; display: inline-block; text-align: left; margin-bottom: 5px;" />
+                        </div>
+                        <div class="col-12">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" placeholder="Password" style="margin-bottom: 15px; width: 400px; display: inline-block; text-align: left; margin-bottom: 5px;" />
+                        </div>
+                        <div class="col-12">
+                            <label for="confirm_password">Confirm Password</label>
+                            <input type="password" name="confirm_password" placeholder="Confirm Password" style="margin-bottom: 15px; width: 400px; display: inline-block; text-align: left; margin-bottom: 5px;" />
+                        </div>
+                        <div class="col-12">
+                            <div class="actions">
+                                <input type="submit" value="Register" class="primary" name="register" />
                             </div>
                         </div>
+                        <div class="col-12">
+                            <a href="login.php">Sudah punya Akun?</a>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </form>
+
+
         </div>
-    </section>
+
+        <!-- Footer -->
+        <footer id="footer">
+            <p class="copyright">Web Sliders Pro</p>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/jquery.scrollex.min.js"></script>
     <script src="assets/js/jquery.scrolly.min.js"></script>
@@ -77,6 +108,7 @@
     <script src="assets/js/breakpoints.min.js"></script>
     <script src="assets/js/util.js"></script>
     <script src="assets/js/main.js"></script>
+
 </body>
 
 </html>

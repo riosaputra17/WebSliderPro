@@ -3,36 +3,48 @@ session_start();
 require 'backend/koneksi.php';
 
 if (isset($_SESSION['username'])) {
-	// Jika sudah login, redirect ke halaman sesuai role
-	if ($_SESSION['role'] == 'admin') {
-		header('location:admin.php');
-	} elseif ($_SESSION['role'] == 'user') {
-		header('location:materi.php');
-	}
+    // Jika sudah login, redirect ke halaman sesuai role
+    if ($_SESSION['role'] == 'admin') {
+        header('location:admin.php');
+    } elseif ($_SESSION['role'] == 'user') {
+        header('location:materi.php');
+    }
 }
 
 if (isset($_POST['login'])) {
-	$username = $_POST['username'];
-	$password = $_POST['password'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-	$result = mysqli_query($conn, "SELECT * FROM users WHERE username='$username' AND password='$password'");
-	$user = mysqli_fetch_assoc($result);
+    $result_username = mysqli_query($conn, "SELECT * FROM users WHERE username='$username'");
+    while ($data_username = mysqli_fetch_array($result_username)) {
+        $hashed_password = $data_username['password'];
+        $password_decoded = password_verify($password, $hashed_password);
+        $role = $data_username['role'];
 
-	if ($user) {
-        $_SESSION['id'] = $user['id'];
-		$_SESSION['username'] = $username;
-		$_SESSION['role'] = $user['role']; // Tambahkan kolom 'role' pada tabel users
+        if ($password_decoded) {
+            $_SESSION['username'] = $username;
+            $_SESSION['role'] = $role; // Tambahkan kolom 'role' pada tabel users
 
-		if ($_SESSION['role'] == 'admin') {
-			header('location:admin.php');
-		} elseif ($_SESSION['role'] == 'user') {
-			header('location:index.php');
-		}
-	} else {
-		echo 'Username atau password salah';
-		header('location:login.php');
-	}
+            if ($_SESSION['role'] == 'admin') {
+                header('location:admin.php');
+            } elseif ($_SESSION['role'] == 'user') {
+                header('location:index.php');
+            }
+        } else {
+            echo 'Username atau password salah' . $password_decoded;
+            header('location:login.php');
+        }
+    }
+    if ($_SESSION['role'] == 'admin') {
+        header('location:admin.php');
+    } elseif ($_SESSION['role'] == 'user') {
+        header('location:index.php');
+    }
+} else {
+    echo 'Username atau password salah';
+    header('location:login.php');
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -92,6 +104,7 @@ if (isset($_POST['login'])) {
                                 <li><a href="index.php" class="button">Kembali</a></li>
                             </ul>
                         </div>
+                        <a href="registrasi.php">Sign Up</a>
                     </div>
                 </form>
             </section>
