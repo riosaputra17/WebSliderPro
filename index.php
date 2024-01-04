@@ -94,7 +94,7 @@ if (isset($_SESSION['username'])) {
                             menyenangkan dan interaktif. Dapatkan tutorial langkah-demi-langkah, ikuti webinar, dan
                             kerja sama dalam proyek bersama. Sambut perubahan dan tingkatkan keterampilan presentasi
                             Anda bersama kami!</p>
-                    </div>
+                    </div>xa
                     <img src="img/landing1.png" class="landing" />
                 </div>
                 <div class="spotlight2">

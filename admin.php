@@ -44,7 +44,7 @@ include 'backend/update_peserta.php';
 
         <!-- Header -->
         <header id="header" class="alt">
-            <h1>Richard's Lab <br> Admin Dashboard</h1>
+            <h1>Web Sliders Pro<br> Admin Dashboard</h1>
         </header>
 
         <!-- Main -->
@@ -99,6 +99,7 @@ include 'backend/update_peserta.php';
                                 <td><?= $posisi; ?></td>
                                 <td><?= $nama; ?></td>
                                 <td><button type="button" class="button primary small" data-toggle="modal" data-target="#view<?= $id; ?>">Tampilkan</button></td>
+
                                 <form method="post">
                                     <input type="hidden" name="id_peserta" value="<?= $id ?>">
                                     <td><button type="submit" onclick="return confirm('Apakah Anda yakin untuk mengubah status dari peserta <?php echo $nama .' dengan ID: '. $id ?>?')" name="is_approved" value="<?= !$is_approved ?>" class="btn <?= ($is_approved == 1) ? 'btn-success' : 'btn-warning' ?>"><?= ($is_approved == 1) ? 'Diterima' : 'Belum Diterima' ?></button></td>
@@ -362,7 +363,6 @@ include 'backend/update_peserta.php';
                             if (isset($_POST['delete_materi'])) {
                                 $idm = $_POST['idm'];
                                 $querydelete = mysqli_query($conn, "delete from materi where id_materi='$idm'");
-
                                 if ($querydelete) {
                                     echo 'Berhasil
                             <meta http-equiv="refresh" content="1;url=admin.php" />';
@@ -382,7 +382,7 @@ include 'backend/update_peserta.php';
 
         <!-- Footer -->
         <footer id="footer">
-            <p class="copyright">Richard's Lab 2020</p>
+            <p class="copyright">Web Sliders Pro</p>
         </footer>
 
     </div>
