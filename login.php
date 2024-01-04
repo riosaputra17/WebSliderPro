@@ -22,6 +22,7 @@ if (isset($_POST['login'])) {
         $role = $data_username['role'];
 
         if ($password_decoded) {
+            $_SESSION['id'] = $data_username['id'];
             $_SESSION['username'] = $username;
             $_SESSION['role'] = $role; // Tambahkan kolom 'role' pada tabel users
 
@@ -35,14 +36,7 @@ if (isset($_POST['login'])) {
             header('location:login.php');
         }
     }
-    if ($_SESSION['role'] == 'admin') {
-        header('location:admin.php');
-    } elseif ($_SESSION['role'] == 'user') {
-        header('location:index.php');
-    }
-} else {
-    echo 'Username atau password salah';
-    header('location:login.php');
+    
 }
 
 ?>

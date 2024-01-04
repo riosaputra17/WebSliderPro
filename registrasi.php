@@ -14,7 +14,7 @@ if (isset($_POST['register'])) {
     }
 
     // Hashing password
-    $hashed_password = password_hash($password, 'kunciiniadalahrahasiaperusahaanjadiharusdijagabaikbaikdanjangansampaijatuhkepihakyangtidakbertanggungjawab');
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     // Simpan data pengguna baru ke database
     $result = mysqli_query($conn, "INSERT INTO users (username, password, role) VALUES ('$username', '$hashed_password', 'user')");
