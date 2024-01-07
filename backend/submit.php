@@ -1,6 +1,8 @@
 <?php
 
 if(isset($_POST['apply'])){
+    $id_job = $_POST['id_job'];
+    $id_user = $_POST['id_user'];
     $a = $_POST['fullname'];
     $b = $_POST['gender'];
     $c = $_POST['kotalahir'];
@@ -12,7 +14,7 @@ if(isset($_POST['apply'])){
     $i = $_POST['linkedin'];
     $j = $_POST['portfolio'];
 
-    $insertdata = mysqli_query($conn,"insert into registrant (name,gender,kotalahir,dob,alamat,email,telepon,motivational,linkedin,portfolio) values('$a','$b','$c','$d','$e','$f','$g','$h','$i','$j')");
+    $insertdata = mysqli_query($conn, "insert into registrant (idjob,iduser,name,gender,dob,alamat,email,telepon,motivational,linkedin,portfolio) values('$id_job','$id_user','$a','$b','$d','$e','$f','$g','$h','$i','$j')");
 
     if($insertdata){
         header('location:thanks.php');

@@ -3,6 +3,9 @@ include 'backend/cek.php';
 require 'backend/koneksi.php';
 include 'backend/tambahjob.php';
 include 'backend/update.php';
+include 'backend/tambahmateri.php';
+include 'backend/update_materi.php';
+include 'backend/update_peserta.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -61,7 +64,8 @@ include 'backend/update.php';
                             <th>Register</th>
                             <th>Posisi</th>
                             <th>Nama</th>
-                            <th>Aksi</th>
+                            <th>Detail</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -87,6 +91,7 @@ include 'backend/update.php';
                             $bday = new DateTime($dob);
                             $today = new Datetime(date('m.d.y'));
                             $diff = $today->diff($bday);
+                            $is_approved = $reg['is_approved'];
 
                         ?>
                             <tr>
@@ -94,6 +99,11 @@ include 'backend/update.php';
                                 <td><?= $posisi; ?></td>
                                 <td><?= $nama; ?></td>
                                 <td><button type="button" class="button primary small" data-toggle="modal" data-target="#view<?= $id; ?>">Tampilkan</button></td>
+
+                                <form method="post">
+                                    <input type="hidden" name="id_peserta" value="<?= $id ?>">
+                                    <td><button type="submit" onclick="return confirm('Apakah Anda yakin untuk mengubah status dari peserta <?php echo $nama .' dengan ID: '. $id ?>?')" name="is_approved" value="<?= !$is_approved ?>" class="btn <?= ($is_approved == 1) ? 'btn-success' : 'btn-warning' ?>"><?= ($is_approved == 1) ? 'Diterima' : 'Belum Diterima' ?></button></td>
+                                </form>
                             </tr>
 
                             <!-- The Modal -->
@@ -153,16 +163,16 @@ include 'backend/update.php';
 
             <section class="main special">
                 <header class="major">
-                    <h2>Kelola Materi</h2>
+                    <h2>Kelola Job</h2>
                 </header>
                 <br>
-                <div align="right"><button type="button" class="primary" data-toggle="modal" data-target="#myModal">Tambah Kelas Baru</button></div>
+                <div align="right"><button type="button" class="primary" data-toggle="modal" data-target="#modalTambahJob">Tambah Job Baru</button></div>
                 <br>
                 <div class="data-tables datatable-dark">
                     <table id="table1" class="display" width="100%">
                         <thead style="background-color:#2b2b2b;color:#fff">
                             <tr>
-                                <th>Kelas Tersedia</th>
+                                <th>Posisi Tersedia</th>
                                 <th>Periode</th>
                                 <th>Maks Pendaftaran</th>
                                 <th>Aksi</th>
@@ -190,14 +200,14 @@ include 'backend/update.php';
                                         <td><?= $namajob; ?></td>
                                         <td><?= $periode; ?></td>
                                         <td><?= $deadline; ?></td>
-                                        <td><button type="button" class="button primary small" data-toggle="modal" data-target="#edit<?= $idjob; ?>">Edit</button><button type="submit" class="button small" style="background-color:red;" name="deletejob">
+                                        <td><button type="button" class="button primary small" data-toggle="modal" data-target="#edit<?= $idjob; ?>">Edit</button><button onclick="return confirm('Apakah Anda yakin ingin menghapus Kelas <?php echo $namajob ?>?')" type="submit" class="button small" style="background-color:red;" name="deletejob">
                                                 <font color="white">Delete</font>
                                             </button></td>
                                     </form>
                                 </tr>
 
 
-                                <!-- The Modal -->
+                                <!-- The Modal Edit -->
                                 <div class="modal fade" id="edit<?= $idjob; ?>">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -260,6 +270,113 @@ include 'backend/update.php';
                     </table>
             </section>
 
+            <section class="main special">
+                <header class="major">
+                    <h2>Kelola Materi</h2>
+                </header>
+                <br>
+                <div align="right"><button type="button" class="primary" data-toggle="modal" data-target="#modalTambahMateri">Tambah Materi Baru</button></div>
+                <br>
+                <div class="data-tables datatable-dark">
+                    <table id="table3" class="display" width="100%">
+                        <thead style="background-color:#2b2b2b;color:#fff">
+                            <tr>
+                                <th>ID Materi</th>
+                                <th>Nama Job</th>
+                                <th>Nama Materi</th>
+                                <th>Link Materi</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $getdata = mysqli_query($conn, "select materi.id_materi as id_materi, materi.nama_materi as nama_materi, materi.link_materi as link_materi, job.id as id_job, job.jobname as job_name from materi join job on materi.id_job=job.id");
+                            while ($data = mysqli_fetch_array($getdata)) {
+                                $id_materi = $data['id_materi'];
+                                $id_job = $data['id_job'];
+                                $job_name = $data['job_name'];
+                                $nama_materi = $data['nama_materi'];
+                                $link_materi = $data['link_materi'];
+
+                            ?>
+
+                                <tr>
+                                    <form method="post">
+                                        <input type="hidden" name="idm" value="<?= $id_materi; ?>">
+                                        <td><?= $id_materi; ?></td>
+                                        <td><?= $job_name; ?></td>
+                                        <td><?= $nama_materi; ?></td>
+                                        <td><?= $link_materi; ?></td>
+                                        <td><button type="button" class="button primary small" data-toggle="modal" data-target="#edit_materi_<?= $id_materi; ?>">Ubah Materi</button><button onclick="return confirm('Apakah Anda yakin ingin menghapus Materi <?php echo $nama_materi ?>?')" type="submit" class="button small" style="background-color:red;" name="delete_materi">
+                                                <font color="white">Hapus Materi</font>
+                                            </button></td>
+                                    </form>
+                                </tr>
+
+
+                                <!-- The Modal Edit Materi -->
+                                <div class="modal fade" id="edit_materi_<?= $id_materi; ?>">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <form method="post">
+
+                                                <!-- Modal Header -->
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Edit <?= $nama_materi; ?></h4>
+                                                </div>
+
+                                                <!-- Modal body -->
+                                                <div class="modal-body">
+                                                    <input type="text" name="update_nama_materi" class="form-control" value="<?= $nama_materi; ?>"><br>
+
+                                                    <select name="update_kategori">
+                                                        <?php
+                                                        $get_data_job = mysqli_query($conn, "select * from job");
+                                                        while ($data = mysqli_fetch_array($get_data_job)) {
+                                                            $idjob = $data['id'];
+                                                            $namajob = $data['jobname'];
+                                                            $kategori = array($idjob => $namajob);
+                                                        ?>
+                                                            <option value="<?= $idjob; ?>"><?= $namajob; ?></option>
+                                                            <?php foreach ($job_array as $var => $kategori) : ?>
+                                                                <option value="<?php echo $var ?>" <?php if ($var == $result['update_kategori']) : ?> selected="selected" <?php endif; ?>><?php echo $kategori ?></option>
+                                                        <?php endforeach;
+                                                        } ?>
+                                                    </select>
+                                                    <br>
+                                                    <input type="text" name="update_link_materi" class="form-control" value="<?= $link_materi; ?>"><br>
+                                                    <input type="hidden" name="updateid" value="<?= $id_materi; ?>">
+                                                </div>
+
+                                                <!-- Modal footer -->
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary" name="update_materi">Update Materi</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            <?php
+                            };
+
+                            if (isset($_POST['delete_materi'])) {
+                                $idm = $_POST['idm'];
+                                $querydelete = mysqli_query($conn, "delete from materi where id_materi='$idm'");
+                                if ($querydelete) {
+                                    echo 'Berhasil
+                            <meta http-equiv="refresh" content="1;url=admin.php" />';
+                                } else {
+                                    echo 'Gagal
+                            <meta http-equiv="refresh" content="3;url=submit.php" />';
+                                };
+                            };
+
+                            ?>
+                        </tbody>
+                    </table>
+            </section>
+
 
         </div>
 
@@ -282,8 +399,8 @@ include 'backend/update.php';
 </body>
 
 
-<!-- The Modal -->
-<div class="modal fade" id="myModal">
+<!-- The Modal Tambah Job -->
+<div class="modal fade" id="modalTambahJob">
     <div class="modal-dialog">
         <div class="modal-content" style="background-color:#2b2b2b;">
             <form method="post">
@@ -325,6 +442,50 @@ include 'backend/update.php';
     </div>
 </div>
 
+<!-- The Modal Tambah Materi -->
+<div class="modal fade" id="modalTambahMateri">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color:#2b2b2b;">
+            <form method="post">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Tambah Materi Baru</h4>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <input type="text" name="nama_materi" placeholder="Nama Materi" class="form-control"><br>
+
+                    <select name="kategori">
+                        <?php
+                        $getdata = mysqli_query($conn, "select * from job");
+                        while ($data = mysqli_fetch_array($getdata)) {
+                            $idjob = $data['id'];
+                            $namajob = $data['jobname'];
+                            $kategori = array($idjob => $namajob);
+                        ?>
+                            <option value="<?= $idjob; ?>"><?= $namajob; ?></option>
+                            <?php foreach ($job_array as $var => $kategori) : ?>
+                                <option value="<?php echo $var ?>" <?php if ($var == $result['kategori']) : ?> selected="selected" <?php endif; ?>><?php echo $kategori ?></option>
+                        <?php endforeach;
+                        } ?>
+                    </select>
+                    <br>
+                    <input type="text" name="link_materi" placeholder="Link Materi" class="form-control"><br>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" name="add_materi">Submit</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
 
 
 
@@ -340,6 +501,15 @@ include 'backend/update.php';
 
     $(document).ready(function() {
         $('#table2').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'print'
+            ]
+        });
+    });
+
+    $(document).ready(function() {
+        $('#table3').DataTable({
             dom: 'Bfrtip',
             buttons: [
                 'print'

@@ -24,3 +24,26 @@ a {
 .form-control {
   border: olive;
 }
+
+/* CSS untuk tombol logout */
+#nav ul li .logout-button {
+  /* Warna latar transparan (RGBA dengan alpha 0) */
+  background-color: transparent;
+  
+  /* Warna border merah */
+  border: 1px solid red;
+  
+  /* Warna teks merah */
+  color: red;
+  border-radius: 5px;
+  
+  /* Efek transisi untuk perubahan warna */
+  transition: color 0.3s, border-color 0.3s;
+}
+
+/* Efek hover */
+#nav ul li .logout-button:hover {
+  /* Warna latar hitam saat dihover */
+  background-color: rgb(255, 255, 255);
+}
+

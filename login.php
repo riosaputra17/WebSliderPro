@@ -22,19 +22,21 @@ if (isset($_POST['login'])) {
         $role = $data_username['role'];
 
         if ($password_decoded) {
+            $_SESSION['id'] = $data_username['id'];
             $_SESSION['username'] = $username;
             $_SESSION['role'] = $role; // Tambahkan kolom 'role' pada tabel users
 
             if ($_SESSION['role'] == 'admin') {
                 header('location:admin.php');
             } elseif ($_SESSION['role'] == 'user') {
-                header('location:materi.php');
+                header('location:index.php');
             }
         } else {
             echo 'Username atau password salah' . $password_decoded;
-            // header('location:login.php');
+            header('location:login.php');
         }
     }
+    
 }
 ?>
 
